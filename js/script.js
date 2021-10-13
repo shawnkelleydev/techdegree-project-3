@@ -28,6 +28,7 @@ design.onchange = () => {
   color.disabled = false;
   if (design.value === "js puns") {
     color.selectedIndex = 1;
+    let i;
     for (let i = 1; i < color.children.length; i++) {
       if (i > 3) {
         color[i].style.display = "none";
