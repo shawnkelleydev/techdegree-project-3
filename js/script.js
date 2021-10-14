@@ -65,12 +65,13 @@ const activitiesFieldset = document.getElementById("activities");
 const activityContainers = activitiesFieldset.children[1].children;
 
 //pulls data from selections
-function getSelections() {
+function getCost() {
   let total = 0; //will become displayed total on form
   for (let i = 0; i < activityContainers.length; i++) {
-    let activity = activityContainers[i].children[0];
+    let activity = activityContainers[i].children[0]; //iterates through each activity
     if (activity.checked) {
-      let cost = parseInt(activity.getAttribute("data-cost")); //extracts number from data-cost attribute
+      //checks for checks
+      let cost = parseInt(activity.getAttribute("data-cost")); //extracts number
       total += cost; //adds number to total
     }
   }
@@ -78,3 +79,12 @@ function getSelections() {
   totalText.innerText = `Total: $${total}`;
   return total;
 }
+
+//listener callback
+function activityChange() {
+  getCost();
+}
+
+activitiesFieldset.addEventListener("change", () => {
+  activityChange();
+});
