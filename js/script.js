@@ -201,3 +201,26 @@ paymentMethod.onchange = () => {
     bitcoin.style.display = "none";
   }
 };
+
+/*------------------
+
+  FORM VALIDATION
+
+------------------*/
+
+//  name: /[A-Z]*? ?[A-Z][a-z]* [A-Z][a-z]*/
+//  email: /\w+@\w+.com/
+//  cc: /\d{13,16}/
+//  zip: /\d{5}/
+//  cvv: /\d{3}/
+
+//select form, listen for submit
+
+let form = document.querySelector("form");
+
+function submitHandler() {
+  form.preventDefault();
+  console.log(submit);
+}
+
+form.addEventListener("submit", submitHandler);
