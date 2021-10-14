@@ -133,13 +133,6 @@ function conflictCheck(input, scheduleNumber) {
     let eventScheduleNumber = events[i].scheduleNumber;
     let activity = activityContainers[i + 1].children[0];
 
-    /*
-    
-        Need to loop through elements to see which ones are already 
-        checked and keep conflicting elements disabled.
-
-    */
-
     if (
       input.checked && //only works if input element checked
       eventName !== inputName && //if the user selection is different than the object input and
@@ -148,8 +141,12 @@ function conflictCheck(input, scheduleNumber) {
       //something's wrong with activity
       activity.disabled = true; //turn the conflicting item off
       activityContainers[i + 1].style.backgroundColor = "darkGray";
-    } else {
-      activity.disabled = false; //make sure the non-conflicting item is on
+    } else if (
+      !input.checked &&
+      eventName !== inputName &&
+      eventScheduleNumber === scheduleNumber
+    ) {
+      activity.disabled = false;
       activityContainers[i + 1].style.backgroundColor = "";
     }
   }
