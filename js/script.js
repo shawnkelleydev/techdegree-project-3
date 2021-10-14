@@ -211,16 +211,92 @@ paymentMethod.onchange = () => {
 //  name: /[A-Z]*? ?[A-Z][a-z]* [A-Z][a-z]*/
 //  email: /\w+@\w+.com/
 //  cc: /\d{13,16}/
-//  zip: /\d{5}/
-//  cvv: /\d{3}/
+//  zip: /^\d{5}$/
+//  cvv: /^\d{3}$/
 
 //select form, listen for submit
 
-let form = document.querySelector("form");
+const form = document.querySelector("form");
+//select ccn, zip, cvv, email
 
-function submitHandler() {
-  form.preventDefault();
-  console.log(submit);
+function checkName() {
+  let bool = true;
+  if (!nameField.value) {
+    bool = false;
+  }
+  return bool;
 }
 
-form.addEventListener("submit", submitHandler);
+const emailField = document.querySelector("input[type=email]");
+
+function checkEmail() {
+  let bool = true;
+  let regex = /\w+@\w+.com/;
+  if (!regex.test(emailField.value)) {
+    bool = false;
+  }
+  return bool;
+}
+
+const ccn = document.querySelector("#cc-num");
+
+function checkCCN() {
+  let bool = true;
+  let regex = /^\d{13,16}$/;
+  if (!regex.test(ccn.value)) {
+    console.log("ccn false");
+    bool = false;
+  }
+  return bool;
+}
+
+const zip = document.querySelector("#zip");
+
+function checkZip() {
+  let bool = true;
+  let regex = /^\d{5}$/;
+  if (!regex.test(zip.value)) {
+    bool = false;
+  }
+  return bool;
+}
+
+const cvv = document.querySelector("#cvv");
+
+function checkCVV() {
+  let bool = true;
+  let regex = /^\d{3}$/;
+  if (!regex.test(cvv.value)) {
+    bool = false;
+  }
+  return bool;
+}
+
+//check name, email, ccn, zip, cvv
+function submitHandler(e) {
+  const stop = e.preventDefault();
+  if (paymentMethod.value === "credit-card") {
+    if (!checkName()) {
+      stop;
+      alert("name");
+    } else if (!checkEmail()) {
+      stop;
+      alert("email");
+    } else if (!checkCCN()) {
+      stop;
+      alert("ccn");
+    } else if (!checkZip()) {
+      stop;
+      alert("zip");
+    } else if (!checkCVV()) {
+      stop;
+      alert("cvv");
+    } else {
+      console.log("success!");
+    }
+  }
+
+  stop;
+}
+
+form.addEventListener("submit", (e) => submitHandler(e));
