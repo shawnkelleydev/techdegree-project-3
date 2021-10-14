@@ -208,12 +208,6 @@ paymentMethod.onchange = () => {
 
 ------------------*/
 
-//  name: /[A-Z]*? ?[A-Z][a-z]* [A-Z][a-z]*/
-//  email: /\w+@\w+.com/
-//  cc: /\d{13,16}/
-//  zip: /^\d{5}$/
-//  cvv: /^\d{3}$/
-
 //select form, listen for submit
 
 const form = document.querySelector("form");
@@ -234,6 +228,17 @@ function checkEmail() {
   let regex = /\w+@\w+.com/;
   if (!regex.test(emailField.value)) {
     bool = false;
+  }
+  return bool;
+}
+
+function checkActivities() {
+  let bool = false;
+  for (let i = 0; i < activityContainers.length; i++) {
+    let activity = activityContainers[i].children[0]; //iterates through each activity
+    if (activity.checked) {
+      bool = true;
+    }
   }
   return bool;
 }
@@ -282,6 +287,9 @@ function submitHandler(e) {
     } else if (!checkEmail()) {
       stop;
       alert("email");
+    } else if (!checkActivities()) {
+      stop;
+      alert("activities");
     } else if (!checkCCN()) {
       stop;
       alert("ccn");
@@ -295,7 +303,6 @@ function submitHandler(e) {
       console.log("success!");
     }
   }
-
   stop;
 }
 
