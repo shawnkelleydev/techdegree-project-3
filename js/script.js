@@ -1,3 +1,9 @@
+/*--------------
+
+  BASIC INFO
+
+--------------*/
+
 let textFields = document.querySelectorAll("input[type=text]");
 let nameField = textFields[0];
 
@@ -47,3 +53,28 @@ design.onchange = () => {
     }
   }
 };
+
+/*--------------------------
+
+  REGISTER FOR ACTIVITIES
+
+--------------------------*/
+
+//selects array of activity containers
+const activitiesFieldset = document.getElementById("activities");
+const activityContainers = activitiesFieldset.children[1].children;
+
+//pulls data from selections
+function getSelections() {
+  let total = 0;
+  for (let i = 0; i < activityContainers.length; i++) {
+    let activity = activityContainers[i].children[0];
+    if (activity.checked) {
+      let cost = parseInt(activity.getAttribute("data-cost"));
+      total += cost;
+    }
+  }
+  let totalText = document.getElementById("activities-cost");
+  totalText.innerText = `Total: $${total}`;
+  return total;
+}
