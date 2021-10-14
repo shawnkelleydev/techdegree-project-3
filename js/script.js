@@ -75,16 +75,13 @@ function getCost() {
       total += cost; //adds number to total
     }
   }
-  let totalText = document.getElementById("activities-cost");
-  totalText.innerText = `Total: $${total}`;
-  return total;
+  return total; //returns number object
 }
 
 //listener callback
 function activityChange() {
-  getCost();
+  let totalText = document.getElementById("activities-cost"); //selects appropriate page element to display total
+  totalText.innerText = `Total: $${getCost()}`; //dynamically inserts total on page
 }
 
-activitiesFieldset.addEventListener("change", () => {
-  activityChange();
-});
+activitiesFieldset.addEventListener("change", activityChange);
