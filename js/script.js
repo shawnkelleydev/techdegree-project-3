@@ -138,7 +138,6 @@ function conflictCheck(input, scheduleNumber) {
       eventName !== inputName && //if the user selection is different than the object input and
       eventScheduleNumber === scheduleNumber //if the scheduleNumber is the same
     ) {
-      //something's wrong with activity
       activity.disabled = true; //turn the conflicting item off
       activityContainers[i + 1].style.backgroundColor = "darkGray";
     } else if (
@@ -173,20 +172,20 @@ activitiesFieldset.addEventListener("change", (e) => activityChange(e));
 
 ----------------*/
 
-//.selectedIndex = i
-
-//select payment method select field / assign selected to index 1
-
+//cc preselection
 const paymentMethod = document.getElementById("payment");
 paymentMethod.selectedIndex = 1;
 
+//assigning divs to variables
 const creditCard = document.getElementById("credit-card");
 const paypal = document.getElementById("paypal");
 const bitcoin = document.getElementById("bitcoin");
 
+//initial presentation
 paypal.style.display = "none";
 bitcoin.style.display = "none";
 
+//handles changing payment methods / css display types
 paymentMethod.onchange = () => {
   if (paymentMethod.value === "paypal") {
     creditCard.style.display = "none";
