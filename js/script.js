@@ -66,12 +66,12 @@ const activityContainers = activitiesFieldset.children[1].children;
 
 //pulls data from selections
 function getSelections() {
-  let total = 0;
+  let total = 0; //will become displayed total on form
   for (let i = 0; i < activityContainers.length; i++) {
     let activity = activityContainers[i].children[0];
     if (activity.checked) {
-      let cost = parseInt(activity.getAttribute("data-cost"));
-      total += cost;
+      let cost = parseInt(activity.getAttribute("data-cost")); //extracts number from data-cost attribute
+      total += cost; //adds number to total
     }
   }
   let totalText = document.getElementById("activities-cost");
