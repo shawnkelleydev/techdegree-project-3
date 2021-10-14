@@ -208,11 +208,6 @@ paymentMethod.onchange = () => {
 
 ------------------*/
 
-//select form, listen for submit
-
-const form = document.querySelector("form");
-//select ccn, zip, cvv, email
-
 function checkName() {
   let bool = true;
   if (!nameField.value) {
@@ -277,20 +272,20 @@ function checkCVV() {
   return bool;
 }
 
-//check name, email, ccn, zip, cvv
+//submit callback validator
 function submitHandler(e) {
   const stop = e.preventDefault();
-  if (paymentMethod.value === "credit-card") {
-    if (!checkName()) {
-      stop;
-      alert("name");
-    } else if (!checkEmail()) {
-      stop;
-      alert("email");
-    } else if (!checkActivities()) {
-      stop;
-      alert("activities");
-    } else if (!checkCCN()) {
+  if (!checkName()) {
+    stop;
+    alert("name");
+  } else if (!checkEmail()) {
+    stop;
+    alert("email");
+  } else if (!checkActivities()) {
+    stop;
+    alert("activities");
+  } else if (paymentMethod.value === "credit-card") {
+    if (!checkCCN()) {
       stop;
       alert("ccn");
     } else if (!checkZip()) {
@@ -299,11 +294,10 @@ function submitHandler(e) {
     } else if (!checkCVV()) {
       stop;
       alert("cvv");
-    } else {
-      console.log("success!");
     }
   }
-  stop;
 }
 
+//listener
+const form = document.querySelector("form");
 form.addEventListener("submit", (e) => submitHandler(e));
