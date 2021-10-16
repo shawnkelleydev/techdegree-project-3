@@ -240,9 +240,28 @@ function errorTest(element, regex, bool) {
   if (!regex.test(element.value)) {
     bool = false;
     invalid(element);
+    if (element === emailField) {
+      //check for @
+      //check for .com
+      const val = emailField.value;
+      const textZone = emailField.parentElement.lastElementChild;
+      const atRegEx = /^\w*[^@]\w*?[.]?\w*?$/;
+      const domRegEx = /^\w*@$/;
+      const comRegEx = /^\w*@\w+.?c?o?$/;
+      if (atRegEx.test(val)) {
+        textZone.innerText = "Please add an @ symbol";
+      } else if (domRegEx.test(val)) {
+        textZone.innerText = "Please a domain after the @ symbol";
+      } else if (comRegEx.test(val)) {
+        textZone.innerText = "Please add .com";
+      } else {
+        textZone.innerText = "Email address must be formatted correctly";
+      }
+    }
   } else {
     valid(element);
   }
+
   return bool;
 }
 
@@ -348,6 +367,8 @@ function submitHandler(e) {
   }
   if (valid === false) {
     stop;
+  } else {
+    alert("Success!");
   }
 }
 
