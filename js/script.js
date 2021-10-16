@@ -230,6 +230,12 @@ paymentMethod.onchange = () => {
 
 ------------------*/
 
+function errorListen(element, regex, bool) {
+  element.addEventListener("input", () => {
+    errorTest(element, regex, bool);
+  });
+}
+
 function errorTest(element, regex, bool) {
   if (!regex.test(element.value)) {
     bool = false;
@@ -237,15 +243,6 @@ function errorTest(element, regex, bool) {
   } else {
     valid(element);
   }
-  element.addEventListener("input", () => {
-    if (!regex.test(element.value)) {
-      bool = false;
-      invalid(element);
-    } else {
-      valid(element);
-    }
-    return bool;
-  });
   return bool;
 }
 
@@ -276,6 +273,8 @@ function checkName() {
   return bool;
 }
 
+errorListen(nameField, /\w+/, true);
+
 //email validation
 const emailField = document.querySelector("input[type=email]");
 
@@ -285,6 +284,8 @@ function checkEmail() {
   errorTest(emailField, regex, bool);
   return bool;
 }
+
+errorListen(emailField, /\w+@\w+.com/, true);
 
 //activity validation
 function checkActivities() {
@@ -315,6 +316,8 @@ function checkCCN() {
   return bool;
 }
 
+errorListen(ccn, /^\d{13,16}$/, true);
+
 const zip = document.querySelector("#zip");
 
 function checkZip() {
@@ -323,6 +326,8 @@ function checkZip() {
   errorTest(zip, regex, bool);
   return bool;
 }
+
+errorListen(zip, /^\d{5}$/, true);
 
 const cvv = document.querySelector("#cvv");
 
@@ -333,14 +338,7 @@ function checkCVV() {
   return bool;
 }
 
-checkName();
-checkEmail();
-checkActivities();
-if (paymentMethod.value === "credit-card") {
-  checkCCN();
-  checkZip();
-  checkCVV();
-}
+errorListen(cvv, /^\d{3}$/, true);
 
 //submit event handler
 function submitHandler(e) {
