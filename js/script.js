@@ -5,6 +5,8 @@ to do for exceeds:
 - ≥1 custom error message responding to user input
 - real-time validation / conditional error messages detailed in README
 
+email
+
 */
 
 /*--------------
@@ -228,6 +230,25 @@ paymentMethod.onchange = () => {
 
 ------------------*/
 
+function errorTest(element, regex, bool) {
+  if (!regex.test(element.value)) {
+    bool = false;
+    invalid(element);
+  } else {
+    valid(element);
+  }
+  element.addEventListener("input", () => {
+    if (!regex.test(element.value)) {
+      bool = false;
+      invalid(element);
+    } else {
+      valid(element);
+    }
+    return bool;
+  });
+  return bool;
+}
+
 //invalid element handler
 function invalid(element) {
   const parent = element.parentElement;
@@ -242,15 +263,16 @@ function valid(element) {
   parent.lastElementChild.style.display = "none";
 }
 
+// function emailInvalidMessages(element) {
+//   const parent = element.parentElement;
+//   if
+// }
+
 //name validation
 function checkName() {
   let bool = true;
-  if (!nameField.value) {
-    bool = false;
-    invalid(nameField);
-  } else {
-    valid(nameField);
-  }
+  let regex = /\w+/;
+  errorTest(nameField, regex, bool);
   return bool;
 }
 
@@ -260,12 +282,7 @@ const emailField = document.querySelector("input[type=email]");
 function checkEmail() {
   let bool = true;
   let regex = /\w+@\w+.com/;
-  if (!regex.test(emailField.value)) {
-    bool = false;
-    invalid(emailField);
-  } else {
-    valid(emailField);
-  }
+  errorTest(emailField, regex, bool);
   return bool;
 }
 
@@ -294,12 +311,7 @@ const ccn = document.querySelector("#cc-num");
 function checkCCN() {
   let bool = true;
   let regex = /^\d{13,16}$/;
-  if (!regex.test(ccn.value)) {
-    bool = false;
-    invalid(ccn);
-  } else {
-    valid(ccn);
-  }
+  errorTest(ccn, regex, bool);
   return bool;
 }
 
@@ -308,12 +320,7 @@ const zip = document.querySelector("#zip");
 function checkZip() {
   let bool = true;
   let regex = /^\d{5}$/;
-  if (!regex.test(zip.value)) {
-    bool = false;
-    invalid(zip);
-  } else {
-    valid(zip);
-  }
+  errorTest(zip, regex, bool);
   return bool;
 }
 
@@ -322,32 +329,32 @@ const cvv = document.querySelector("#cvv");
 function checkCVV() {
   let bool = true;
   let regex = /^\d{3}$/;
-  if (!regex.test(cvv.value)) {
-    bool = false;
-    invalid(cvv);
-  } else {
-    valid(cvv);
-  }
+  errorTest(cvv, regex, bool);
   return bool;
+}
+
+checkName();
+checkEmail();
+checkActivities();
+if (paymentMethod.value === "credit-card") {
+  checkCCN();
+  checkZip();
+  checkCVV();
 }
 
 //submit event handler
 function submitHandler(e) {
   const stop = e.preventDefault();
-  if (!checkName()) {
-    stop;
-  } else if (!checkEmail()) {
-    stop;
-  } else if (!checkActivities()) {
-    stop;
+  let valid = true;
+  if (!checkName() || !checkEmail() || !checkActivities()) {
+    valid = false;
   } else if (paymentMethod.value === "credit-card") {
-    if (!checkCCN()) {
-      stop;
-    } else if (!checkZip()) {
-      stop;
-    } else if (!checkCVV()) {
-      stop;
+    if (!checkCCN() || !checkZip() || !checkCVV) {
+      valid = false;
     }
+  }
+  if (valid === false) {
+    stop;
   }
 }
 
