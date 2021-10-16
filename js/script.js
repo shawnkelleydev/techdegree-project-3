@@ -260,11 +260,6 @@ function valid(element) {
   parent.lastElementChild.style.display = "none";
 }
 
-// function emailInvalidMessages(element) {
-//   const parent = element.parentElement;
-//   if
-// }
-
 //name validation
 function checkName() {
   let bool = true;
