@@ -1,5 +1,3 @@
 # Techdegree Project 3
 
-Interactive form
-
-Under construction!
+Project 3 involves writing the JavaScript necessary to control user-responsive form behavior. The HTML and CSS were provided by Team Treehouse.
