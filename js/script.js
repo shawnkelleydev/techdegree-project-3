@@ -166,6 +166,17 @@ function activityChange(e) {
 //listener
 activitiesFieldset.addEventListener("change", (e) => activityChange(e));
 
+//checkbox accessibility : focus / blur listeners
+const checkboxes = document.querySelectorAll('input[type="checkbox"');
+
+for (let i = 0; i < checkboxes.length; i++) {
+  checkboxes[i].addEventListener("focus", () => {
+    checkboxes[i].parentElement.className = "focus";
+    checkboxes[i].addEventListener("blur", () => {
+      checkboxes[i].parentElement.className = "";
+    });
+  });
+}
 /*----------------
 
   PAYMENT INFO
