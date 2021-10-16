@@ -1,3 +1,12 @@
+/* 
+
+to do for exceeds:
+- ≥1 real-time validation
+- ≥1 custom error message responding to user input
+- real-time validation / conditional error messages detailed in README
+
+*/
+
 /*--------------
 
   BASIC INFO
@@ -219,14 +228,33 @@ paymentMethod.onchange = () => {
 
 ------------------*/
 
+//invalid element handler
+function invalid(element) {
+  const parent = element.parentElement;
+  parent.className = "not-valid";
+  parent.lastElementChild.style.display = "block";
+}
+
+//valid element handler
+function valid(element) {
+  const parent = element.parentElement;
+  parent.className = "valid";
+  parent.lastElementChild.style.display = "none";
+}
+
+//name validation
 function checkName() {
   let bool = true;
   if (!nameField.value) {
     bool = false;
+    invalid(nameField);
+  } else {
+    valid(nameField);
   }
   return bool;
 }
 
+//email validation
 const emailField = document.querySelector("input[type=email]");
 
 function checkEmail() {
@@ -234,10 +262,14 @@ function checkEmail() {
   let regex = /\w+@\w+.com/;
   if (!regex.test(emailField.value)) {
     bool = false;
+    invalid(emailField);
+  } else {
+    valid(emailField);
   }
   return bool;
 }
 
+//activity validation
 function checkActivities() {
   let bool = false;
   for (let i = 0; i < activityContainers.length; i++) {
@@ -246,17 +278,27 @@ function checkActivities() {
       bool = true;
     }
   }
+  if (bool === false) {
+    activitiesFieldset.className = "activities not-valid";
+    activitiesFieldset.lastElementChild.style.display = "block";
+  } else {
+    activitiesFieldset.className = "activities valid";
+    activitiesFieldset.lastElementChild.style.display = "none";
+  }
   return bool;
 }
 
+//cc validation
 const ccn = document.querySelector("#cc-num");
 
 function checkCCN() {
   let bool = true;
   let regex = /^\d{13,16}$/;
   if (!regex.test(ccn.value)) {
-    console.log("ccn false");
     bool = false;
+    invalid(ccn);
+  } else {
+    valid(ccn);
   }
   return bool;
 }
@@ -268,6 +310,9 @@ function checkZip() {
   let regex = /^\d{5}$/;
   if (!regex.test(zip.value)) {
     bool = false;
+    invalid(zip);
+  } else {
+    valid(zip);
   }
   return bool;
 }
@@ -279,36 +324,33 @@ function checkCVV() {
   let regex = /^\d{3}$/;
   if (!regex.test(cvv.value)) {
     bool = false;
+    invalid(cvv);
+  } else {
+    valid(cvv);
   }
   return bool;
 }
 
-//submit callback validator
+//submit event handler
 function submitHandler(e) {
   const stop = e.preventDefault();
   if (!checkName()) {
     stop;
-    alert("name");
   } else if (!checkEmail()) {
     stop;
-    alert("email");
   } else if (!checkActivities()) {
     stop;
-    alert("activities");
   } else if (paymentMethod.value === "credit-card") {
     if (!checkCCN()) {
       stop;
-      alert("ccn");
     } else if (!checkZip()) {
       stop;
-      alert("zip");
     } else if (!checkCVV()) {
       stop;
-      alert("cvv");
     }
   }
 }
 
-//listener
+//submit listener
 const form = document.querySelector("form");
 form.addEventListener("submit", (e) => submitHandler(e));
