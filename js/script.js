@@ -175,7 +175,10 @@ function activityChange(e) {
 }
 
 //listener
-activitiesFieldset.addEventListener("change", (e) => activityChange(e));
+activitiesFieldset.addEventListener("change", (e) => {
+  activityChange(e); //checks for conflicts
+  checkActivities(); //checks whether at least one thing is selected
+});
 
 //checkbox accessibility : focus / blur listeners
 const checkboxes = document.querySelectorAll('input[type="checkbox"');
@@ -236,7 +239,8 @@ function errorListen(element, regex, bool) {
   });
 }
 
-function errorTest(element, regex, bool) {
+function errorTest(element, regex) {
+  let bool = true;
   if (!regex.test(element.value)) {
     bool = false;
     invalid(element);
@@ -251,7 +255,7 @@ function errorTest(element, regex, bool) {
       if (atRegEx.test(val)) {
         textZone.innerText = "Please add an @ symbol";
       } else if (domRegEx.test(val)) {
-        textZone.innerText = "Please a domain after the @ symbol";
+        textZone.innerText = "Please add a domain after the @ symbol";
       } else if (comRegEx.test(val)) {
         textZone.innerText = "Please add .com";
       } else {
@@ -265,14 +269,14 @@ function errorTest(element, regex, bool) {
   return bool;
 }
 
-//invalid element handler
+//invalid element styling handler
 function invalid(element) {
   const parent = element.parentElement;
   parent.className = "not-valid";
   parent.lastElementChild.style.display = "block";
 }
 
-//valid element handler
+//valid element styling handler
 function valid(element) {
   const parent = element.parentElement;
   parent.className = "valid";
@@ -280,26 +284,24 @@ function valid(element) {
 }
 
 //name validation
+
+const nameregex = /\w+/;
+
 function checkName() {
-  let bool = true;
-  let regex = /\w+/;
-  errorTest(nameField, regex, bool);
-  return bool;
+  return errorTest(nameField, nameregex);
 }
 
-errorListen(nameField, /\w+/, true);
+errorListen(nameField, nameregex, true);
 
 //email validation
 const emailField = document.querySelector("input[type=email]");
+const emailregex = /\w+@\w+.com/;
 
 function checkEmail() {
-  let bool = true;
-  let regex = /\w+@\w+.com/;
-  errorTest(emailField, regex, bool);
-  return bool;
+  return errorTest(emailField, emailregex);
 }
 
-errorListen(emailField, /\w+@\w+.com/, true);
+errorListen(emailField, emailregex, true);
 
 //activity validation
 function checkActivities() {
@@ -322,56 +324,46 @@ function checkActivities() {
 
 //cc validation
 const ccn = document.querySelector("#cc-num");
+const ccnregex = /^\d{13,16}$/;
 
 function checkCCN() {
-  let bool = true;
-  let regex = /^\d{13,16}$/;
-  errorTest(ccn, regex, bool);
-  return bool;
+  return errorTest(ccn, ccnregex);
 }
 
-errorListen(ccn, /^\d{13,16}$/, true);
+errorListen(ccn, ccnregex, true);
 
 const zip = document.querySelector("#zip");
+const zipregex = /^\d{5}$/;
 
 function checkZip() {
-  let bool = true;
-  let regex = /^\d{5}$/;
-  errorTest(zip, regex, bool);
-  return bool;
+  return errorTest(zip, zipregex);
 }
 
-errorListen(zip, /^\d{5}$/, true);
+errorListen(zip, zipregex, true);
 
 const cvv = document.querySelector("#cvv");
+const cvvregex = /^\d{3}$/;
 
 function checkCVV() {
-  let bool = true;
-  let regex = /^\d{3}$/;
-  errorTest(cvv, regex, bool);
-  return bool;
+  return errorTest(cvv, cvvregex);
 }
 
-errorListen(cvv, /^\d{3}$/, true);
+errorListen(cvv, cvvregex, true);
 
 //submit event handler
 function submitHandler(e) {
-  const stop = e.preventDefault();
-  let valid = true;
   if (!checkName() || !checkEmail() || !checkActivities()) {
-    valid = false;
-  } else if (paymentMethod.value === "credit-card") {
-    if (!checkCCN() || !checkZip() || !checkCVV) {
-      valid = false;
-    }
+    e.preventDefault();
   }
-  if (valid === false) {
-    stop;
-  } else {
-    alert("Success!");
+  if (paymentMethod.value === "credit-card") {
+    if (!checkCCN() || !checkZip() || !checkCVV()) {
+      e.preventDefault();
+    }
   }
 }
 
 //submit listener
 const form = document.querySelector("form");
-form.addEventListener("submit", (e) => submitHandler(e));
+form.addEventListener("submit", (e) => {
+  submitHandler(e);
+});
